@@ -49,6 +49,15 @@
           </span>
         </div>
       </form>
+      {% if page_config.show_results %}
+      <h1>{{page_config.text}}</h1>
+      <h1>{{page_config.translated_text}}</h1>
+      <h1>{{page_config.translit_text}}</h1> 
+      <audio controls>
+        <source src="/static/speaker/{{ page_config.file_name }}" type="audio/mpeg">
+      </audio>
+      {% endif %}
+
 </body>
 
 </html>

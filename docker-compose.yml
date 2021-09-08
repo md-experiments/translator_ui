@@ -1,0 +1,71 @@
+version: '3.3'
+
+services:
+
+  webapp_storage:
+    image: 'bitnami/apache:latest'
+    ports:
+      - 7080:8080
+    volumes:
+      - endeavour_agent_data:/opt/bitnami/apache/htdocs
+
+  translator_ui:
+      image : 'translator-ui'
+      volumes:
+        - endeavour_auto_vlog_resource:/app/data
+        - endeavour_agent_data:/app/translator_ui/static
+      ports:
+        - 7081:9090
+      networks:
+        - app-tier
+
+  webservice_videoeditor:
+      image: 'endeavour-webservice-videoeditor'
+      environment:
+        - MINIO_CONFIG_NAME=backend_local_view
+        - MINIO_BUCKET_NAME=xavi
+      volumes:
+        - endeavour_agent_data:/app/data
+      ports:
+        - 7082:8000
+      networks:
+        - app-tier
+
+  contentserver:
+    image: 'bitnami/minio:latest'
+    ports:
+      - 7084:9000
+    environment:
+      - MINIO_ACCESS_KEY=minio-access-key
+      - MINIO_SECRET_KEY=minio-secret-key
+    networks:
+      app-tier:
+        aliases: 
+          - contentserver
+
+  service_search:
+      image : 'service-search'
+      volumes:
+        - endeavour_auto_vlog_resource:/app/data
+        - endeavour_agent_data:/app/translator_ui/static
+      ports:
+        - 7085:9090
+      networks:
+        - app-tier
+networks:
+  app-tier:
+    driver: bridge
+
+volumes:
+  endeavour_agent_data:
+    driver: local
+    driver_opts:
+      type: "tmpfs"
+      device: "tmpfs"
+      o: "size=2560m,uid=1000"
+  endeavour_auto_vlog_resource:
+    driver: local
+    driver_opts:
+      type: "tmpfs"
+      device: "tmpfs"
+      o: "size=2560m,uid=1001"
