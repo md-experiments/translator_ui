@@ -56,8 +56,17 @@
       <audio controls>
         <source src="/static/speaker/{{ page_config.file_name }}" type="audio/mpeg">
       </audio>
+        {% for img in page_config.images %}
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-3">
+            <img src="{{ img }}">
+            </div>
+          </div>
+        </div>
+        {% endfor %}
       {% endif %}
-
+      <img src="https://post.medicalnewstoday.com/wp-content/uploads/sites/3/2020/02/271157_2200-1200x628.jpg">
 </body>
 
 </html>

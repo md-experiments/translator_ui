@@ -49,7 +49,7 @@ services:
         - endeavour_auto_vlog_resource:/app/data
         - endeavour_agent_data:/app/translator_ui/static
       ports:
-        - 7085:9090
+        - 7085:8000
       networks:
         - app-tier
 networks:

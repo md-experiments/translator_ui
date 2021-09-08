@@ -4,8 +4,10 @@ app = Flask(__name__)
 
 video_editor_port = 7082
 video_editor_port = 8000
+search_service_port = 8000
 video_editor_host = 'localhost'
 video_editor_host = 'webservice_videoeditor'
+search_service_host = 'service_search'
 
 @app.route("/")
 def home():
@@ -29,6 +31,17 @@ def translate_from_english():
     }
 
     result_translate = call_fast_api(data, endpoint = 'translate_gcp/', port=video_editor_port, action='POST', host = video_editor_host)
+    
+    data = {
+        "user_id": "user1234",
+        "search_query": str(qry),
+        "search_domains": [
+            "Google"
+        ],
+        "response_size_each_domain": 3
+    }
+    result_search = call_fast_api(data, endpoint = 'search_request/', port=search_service_port, action='POST', host = search_service_host)
+           
     data = {
         "user_id": "user1234",
         "text": result_translate['translated_text'],
@@ -44,6 +57,7 @@ def translate_from_english():
         page_config['translated_text'] = result_translate['translated_text']
         page_config['translit_text'] = transliterate(result_translate['translated_text'])
         page_config['file_name'] = result_tts['file_name']
+        result_search['images'] = [r["thumbnail"] for r in result_search['search_response']]
 
         page_config['show_results'] = True
     return render_template('home.html',page_config = page_config)
