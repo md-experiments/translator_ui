@@ -17,6 +17,14 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
        
 </head>
+<script>
+window.onload = function () {
+
+var myAudio = document.getElementById("myAudio");
+myAudio.playbackRate = 0.5;
+
+};
+</script>
 <body>
     <div class="d-flex justify-content-center">
         <h1 class="text-secondary">∙ Hello Xavi ∙ Здравей Зейви ∙</h1>
@@ -48,25 +56,31 @@
             </svg>
           </span>
         </div>
+        <div>
+          <input type="radio" id="en" name="language" value="en" checked>
+          <label for="en"> English --> Български </label>
+          <input type="radio" id="bg" name="language" value="bg">
+          <label for="bg"> Български --> English </label><br>
+        </div>
       </form>
       {% if page_config.show_results %}
       <h1>{{page_config.text}}</h1>
       <h1>{{page_config.translated_text}}</h1>
       <h1>{{page_config.translit_text}}</h1> 
-      <audio controls>
+      <audio id="myAudio" controls>
         <source src="/static/speaker/{{ page_config.file_name }}" type="audio/mpeg">
       </audio>
         {% for img in page_config.images %}
         <div class="container">
           <div class="row">
             <div class="col-sm-3">
-            <img src="{{ img }}">
+              <img src="{{ img }}"  width="300">
             </div>
           </div>
         </div>
         {% endfor %}
       {% endif %}
-      <img src="https://post.medicalnewstoday.com/wp-content/uploads/sites/3/2020/02/271157_2200-1200x628.jpg">
+      
 </body>
 
 </html>
